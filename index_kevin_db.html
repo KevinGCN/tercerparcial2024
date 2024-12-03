@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumen Base de Datos</title>
+</head>
+
+<body>
+    <div style="background-color: lightcyan;">
+    <h2>Creacion Base de Datos</h2><br><br>
+    <p>
+        Primeramente debemos importar la libreria de sqlite3 en una nueva variable denominada como "sql".<br>
+        Luego utilizamos "def" que en sql significa el inicio de una funcion, llamamos la funcion como <br>
+        "createDB( )" e indicamos el inicio de los atributos con ":". <br>
+        la siguiente linea de codigo es la que se empleara: <br><br>
+        <img src="capturas/Funcion_Create.PNG" alt="Imagen de funcion crear base de datos"><br>
+    </p>
+    <p>
+        Seguido implementamos la segunda funcion para generar la tabla que va a contener los campos de información <br>
+        dentro de la base de datos, nuevamente ocupamos la funcion "def" y denominamos esta funcion como "createTable(
+        ):"<br><br>
+        <img src="capturas/Funcion_CreateTable.PNG" alt="Imagen de la funcion para crear la tabla"><br><br>
+        El codigo de esta base de datos fue definida por el profesor asi como los nombres de las varibales y el tipo de
+        dato que puede almacenar.<br>
+        Por ultimo, luego de haber creado estas funciones debemos llamarlos en un "main" para poder ejecutarlas, esto se
+        definde <br>
+        de la,siguiente manera: <br>
+        <img src="capturas/Condicional.PNG" alt="Imagen del if para arrancar la base de datos y la tabla">
+    </p>
+    <p>
+        Para previsualizar esta base de datos debemos presionar las teclas "Ctrl+Shift+P", esta accion abrira el
+        buscador <br>
+        de Visual Studio Code, donde escribiremos "SQLite: Open Database": <br><br>
+        <img src="capturas/panel.PNG" alt="Interfaz VSC" width="60%" height="40%"><br><br>
+        Podemos ver que en la parte inferior izquierda se despliega un nuevo apartado y es aqui donde podemos observar
+        <br>
+        el contenido de la base de datos creada con los comandos: <br><br>
+        <img src="capturas/mini_browser.PNG" alt="SQL data base visualizador"><br><br>
+        Pero para que esto ocurra debemos abrir un terminal desde el cual podamos ejecutar estas funciones, se vera así:
+        <br><br>
+        <img src="capturas/py_comando.PNG" alt="Comando de python para la creacion de la base de datos"><br><br>
+    </p>
+</div>
+<div style="background-color: lightcoral;">
+    <p>
+        Seguido a esto, una vez creada la base de datos y la tabla, debemos crear la funcion que nos permitira <br>
+        enviar los datos a la base de datos y se ve asi: <br><br>
+        <img src="capturas/Funcion_Insert.PNG" alt="Codigo de la funcion para instertar los datos a la DB"><br><br>
+        Y el comando para que se retornen los datos de la base de datos por medio del terminal es el siguiente : <br>
+        <img src="capturas/Funcion_Read.PNG" alt="Codigo de lectura de información">
+        <video src=""></video>
+    </p>
+</div>
+</body>
+
+</html>
