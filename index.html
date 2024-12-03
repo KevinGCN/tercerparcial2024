@@ -14,19 +14,57 @@
         Primeramente debemos importar la libreria de sqlite3 en una nueva variable denominada como "sql".<br>
         Luego utilizamos "def" que en sql significa el inicio de una funcion, llamamos la funcion como <br>
         "createDB( )" e indicamos el inicio de los atributos con ":". <br>
-        la siguiente linea de codigo es la que se empleara: <br><br>
+        la siguiente linea de codigo es la que se empleara: <br><br><br>
+        def createDB(): <br>
+        conn = sql.connect("autoconocimientoKevin.db")<br>
+        print("Base de datos de autoconocimiento creada")<br>
+        conn.commit()<br>
+        conn.close()<br>
         <img src="capturas/Funcion_Create.PNG" alt="Imagen de funcion crear base de datos"><br>
     </p>
     <p>
         Seguido implementamos la segunda funcion para generar la tabla que va a contener los campos de información <br>
         dentro de la base de datos, nuevamente ocupamos la funcion "def" y denominamos esta funcion como "createTable(
-        ):"<br><br>
+        ):"<br><br><br>
+        def createTable():<br>
+    conn = sql.connect("autoconocimientoKevin.db")<br>
+    cursor = conn.cursor()<br>
+    cursor.execute("""CREATE TABLE experience_planning (<br>
+    planning_id INTEGER PRIMARY KEY AUTOINCREMENT,<br>
+    experience_id INTEGER,<br>
+    experience_type TEXT NOT NULL, -- 'growth' or 'general'<br>
+    start_date DATE NOT NULL,<br>
+    end_date DATE NOT NULL,<br>
+    budget DECIMAL(10,2),<br>
+    status TEXT DEFAULT 'scheduled',<br>
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,<br>
+    FOREIGN KEY (experience_id) REFERENCES experiences(experience_id)<br>
+    );<br>
+    """)<br>
+    print("Tabla creada")<br>
+    conn.commit()<br>
+    conn.close()<br>
         <img src="capturas/Funcion_CreateTable.PNG" alt="Imagen de la funcion para crear la tabla"><br><br>
         El codigo de esta base de datos fue definida por el profesor asi como los nombres de las varibales y el tipo de
         dato que puede almacenar.<br>
         Por ultimo, luego de haber creado estas funciones debemos llamarlos en un "main" para poder ejecutarlas, esto se
         definde <br>
-        de la,siguiente manera: <br>
+        de la,siguiente manera: <br><br><br>
+        def insertRow(experience_id, experience_type, start_date, end_date, budget=None, status="scheduled"):<br>
+    conn = sql.connect("autoconocimientoKevin.db")<br>
+    cursor = conn.cursor()<br>
+    query = """<br>
+    INSERT INTO experience_planning (experience_id, experience_type, start_date, end_date, budget, status)<br>
+    VALUES (?, ?, ?, ?, ?, ?);<br>
+    """<br>
+    try:<br>
+        cursor.execute(query, (experience_id, experience_type, start_date, end_date, budget, status))<br>
+        conn.commit()<br>
+        print("Datos insertados correctamente")<br>
+    except sql.Error as e:<br>
+        print(f"Error al insertar datos: {e}")<br>
+    finally:<br>
+        conn.close()<br>
         <img src="capturas/Condicional.PNG" alt="Imagen del if para arrancar la base de datos y la tabla">
     </p>
     <p>
@@ -39,7 +77,26 @@
         el contenido de la base de datos creada con los comandos: <br><br>
         <img src="capturas/mini_browser.PNG" alt="SQL data base visualizador"><br><br>
         Pero para que esto ocurra debemos abrir un terminal desde el cual podamos ejecutar estas funciones, se vera así:
-        <br><br>
+        <br><br><br>
+        def readRow():<br>
+    try:<br>
+        conn = sql.connect("autoconocimientoKevin.db")<br>
+        cursor = conn.cursor()<br>
+        cursor.execute("""<br>
+        SELECT * FROM experience_planning;<br>
+        """)<br>
+        rows = cursor.fetchall()<br>
+        if rows:<br>
+            print("Registros en la tabla experience_planning:")<br>
+            for row in rows:<br>
+                print(row)<br>
+        else:<br>
+            print("No hay registros en la tabla experience_planning.")<br>
+    except sql.Error as e:<br>
+        print(f"Error al leer los registros: {e}")<br>
+        <br>
+    finally:<br>
+        conn.close()<br>
         <img src="capturas/py_comando.PNG" alt="Comando de python para la creacion de la base de datos"><br><br>
     </p>
 </div>
