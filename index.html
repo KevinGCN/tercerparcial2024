@@ -9,7 +9,7 @@
 
 <body>
     <div style="background-color: lightcyan;">
-    <h2>Creacion Base de Datos</h2><br><br>
+    <h1>Creacion Base de Datos</h1><br><br>
     <p>
         Primeramente debemos importar la libreria de sqlite3 en una nueva variable denominada como "sql".<br>
         Luego utilizamos "def" que en sql significa el inicio de una funcion, llamamos la funcion como <br>
@@ -27,29 +27,44 @@
         dentro de la base de datos, nuevamente ocupamos la funcion "def" y denominamos esta funcion como "createTable(
         ):"<br><br><br>
         def createTable():<br>
-            conn = sql.connect("autoconocimientoKevin.db")<br>
-            cursor = conn.cursor()<br>
-            cursor.execute("""CREATE TABLE experience_planning (<br>
-            planning_id INTEGER PRIMARY KEY AUTOINCREMENT,<br>
-            experience_id INTEGER,<br>
-            experience_type TEXT NOT NULL, -- 'growth' or 'general'<br>
-            start_date DATE NOT NULL,<br>
-            end_date DATE NOT NULL,<br>
-            budget DECIMAL(10,2),<br>
-            status TEXT DEFAULT 'scheduled',<br>
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,<br>
-            FOREIGN KEY (experience_id) REFERENCES experiences(experience_id)<br>
-        );<br>
-            """)<br>
-            print("Tabla creada")<br>
-            conn.commit()<br>
-            conn.close()<br>
+    conn = sql.connect("autoconocimientoKevin.db")<br>
+    cursor = conn.cursor()<br>
+    cursor.execute("""CREATE TABLE experience_planning (<br>
+    planning_id INTEGER PRIMARY KEY AUTOINCREMENT,<br>
+    experience_id INTEGER,<br>
+    experience_type TEXT NOT NULL, -- 'growth' or 'general'<br>
+    start_date DATE NOT NULL,<br>
+    end_date DATE NOT NULL,<br>
+    budget DECIMAL(10,2),<br>
+    status TEXT DEFAULT 'scheduled',<br>
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,<br>
+    FOREIGN KEY (experience_id) REFERENCES experiences(experience_id)<br>
+    );<br>
+    """)<br>
+    print("Tabla creada")<br>
+    conn.commit()<br>
+    conn.close()<br>
         <img src="capturas/Funcion_CreateTable.PNG" alt="Imagen de la funcion para crear la tabla"><br><br>
         El codigo de esta base de datos fue definida por el profesor asi como los nombres de las varibales y el tipo de
         dato que puede almacenar.<br>
         Por ultimo, luego de haber creado estas funciones debemos llamarlos en un "main" para poder ejecutarlas, esto se
         definde <br>
         de la,siguiente manera: <br><br><br>
+        def insertRow(experience_id, experience_type, start_date, end_date, budget=None, status="scheduled"):<br>
+    conn = sql.connect("autoconocimientoKevin.db")<br>
+    cursor = conn.cursor()<br>
+    query = """<br>
+    INSERT INTO experience_planning (experience_id, experience_type, start_date, end_date, budget, status)<br>
+    VALUES (?, ?, ?, ?, ?, ?);<br>
+    """<br>
+    try:<br>
+        cursor.execute(query, (experience_id, experience_type, start_date, end_date, budget, status))<br>
+        conn.commit()<br>
+        print("Datos insertados correctamente")<br>
+    except sql.Error as e:<br>
+        print(f"Error al insertar datos: {e}")<br>
+    finally:<br>
+        conn.close()<br>
         <img src="capturas/Condicional.PNG" alt="Imagen del if para arrancar la base de datos y la tabla">
     </p>
     <p>
@@ -63,52 +78,120 @@
         <img src="capturas/mini_browser.PNG" alt="SQL data base visualizador"><br><br>
         Pero para que esto ocurra debemos abrir un terminal desde el cual podamos ejecutar estas funciones, se vera así:
         <br><br><br>
+        def readRow():<br>
+    try:<br>
+        conn = sql.connect("autoconocimientoKevin.db")<br>
+        cursor = conn.cursor()<br>
+        cursor.execute("""<br>
+        SELECT * FROM experience_planning;<br>
+        """)<br>
+        rows = cursor.fetchall()<br>
+        if rows:<br>
+            print("Registros en la tabla experience_planning:")<br>
+            for row in rows:<br>
+                print(row)<br>
+        else:<br>
+            print("No hay registros en la tabla experience_planning.")<br>
+    except sql.Error as e:<br>
+        print(f"Error al leer los registros: {e}")<br>
+        <br>
+    finally:<br>
+        conn.close()<br>
         <img src="capturas/py_comando.PNG" alt="Comando de python para la creacion de la base de datos"><br><br>
     </p>
 </div>
 <div style="background-color: lightcoral;">
     <p>
         Seguido a esto, una vez creada la base de datos y la tabla, debemos crear la funcion que nos permitira <br>
-        enviar los datos a la base de datos y se ve asi: <br><br><br>
-        def insertRow(experience_id, experience_type, start_date, end_date, budget=None, status="scheduled"):<br>
-            conn = sql.connect("autoconocimientoKevin.db")<br>
-            cursor = conn.cursor()<br>
-            query = """<br>
-            INSERT INTO experience_planning (experience_id, experience_type, start_date, end_date, budget, status)<br>
-            VALUES (?, ?, ?, ?, ?, ?);<br>
-            """<br>
-            try:<br>
-            cursor.execute(query, (experience_id, experience_type, start_date, end_date, budget, status))<br>
-            conn.commit()<br>
-            print("Datos insertados correctamente")<br>
-            except sql.Error as e:<br>
-                print(f"Error al insertar datos: {e}")<br>
-            finally:<br>
-            conn.close()<br>
+        enviar los datos a la base de datos y se ve asi: <br><br>
         <img src="capturas/Funcion_Insert.PNG" alt="Codigo de la funcion para instertar los datos a la DB"><br><br>
-        Y el comando para que se retornen los datos de la base de datos por medio del terminal es el siguiente : <br><br>
-        def readRow():<br>
-            try:<br>
-                conn = sql.connect("autoconocimientoKevin.db")<br>
-                cursor = conn.cursor()<br>
-                cursor.execute("""<br>
-                SELECT * FROM experience_planning;<br>
-                """)<br>
-                rows = cursor.fetchall()<br>
-                if rows:<br>
-                    print("Registros en la tabla experience_planning:")<br>
-                    for row in rows:<br>
-                        print(row)<br>
-                else:<br>
-                    print("No hay registros en la tabla experience_planning.")<br>
-            except sql.Error as e:<br>
-                print(f"Error al leer los registros: {e}")<br>
-            finally:<br>
-                conn.close()<br>
+        Y el comando para que se retornen los datos de la base de datos por medio del terminal es el siguiente : <br>
         <img src="capturas/Funcion_Read.PNG" alt="Codigo de lectura de información">
         <video src=""></video>
     </p>
 </div>
+<div style="background-color: lightskyblue;">
+    <p>
+        Por ultimo, ya tenemos las funciones de agregar y leer por consola, ahora debemos <br>
+        crear las funciones para eliminar y modificar los datos que tenemos almacenados.<br>
+        <br>
+        La funcion ára eliminar datos se genera con el siguiente codigo: <br><br>
+        def deleteRow(experience_id): <br>
+    """<br>
+    Elimina un registro de la tabla 'experience_planning' según su experience_id.<br>
+    <br>
+    Args:<br>
+    experience_id (int): planning_id del usuario que se desea eliminar.<br>
+    """<br>
+    try:<br>
+        conn = sql.connect("autoconocimientoKevin.db")<br>
+        cursor = conn.cursor()<br>
+        <br>
+        # Instrucción para eliminar el registro<br>
+        instruction = f"DELETE FROM experience_planning WHERE experience_id = {experience_id}"<br>
+        <br>
+        cursor.execute(instruction)<br>
+        conn.commit()<br>
+        <br>
+        if cursor.rowcount > 0:<br>
+            print(f"Experiencia {experience_id} eliminada correctamente.")<br>
+        else:<br>
+            print(f"No se encontró ninguna experiencia identificada con: {experience_id}.")<br>
+            <br>
+    except sql.OperationalError as e:<br>
+        print(f"Error en la eliminación: {e}")<br>
+    finally:<br>
+        conn.close()<br><br>
+
+        <img src="capturas/Funcion_Delete.PNG" alt="Funcion eliminar datos por indice de PrimaryKey"><br><br>
+    </p>
+    <p>
+        Por ultimo vamos a generar el codigo de actualizar datos de la base de datos <br>
+        y la sintaxis es de la siguiente manera: <br><br>
+        def updateRow(experience_id, experience_type, start_date, end_date):<br>
+    """<br>
+    Actualiza una fila en la tabla 'users' con base en el user_id.<br>
+    Los parámetros no proporcionados no se actualizan.<br>
+    """<br>
+    try:<br>
+        conn = sql.connect("autoconocimientoKevin.db")<br>
+        cursor = conn.cursor()<br>
+        <br>
+        # Construir la instrucción SQL dinámicamente según los parámetros proporcionados<br>
+        updates = []<br>
+        if experience_id:<br>
+            updates.append(f"experience_id = '{experience_id}'")<br>
+        if experience_type:<br>
+            updates.append(f"experience_type = '{experience_type}'")<br>
+        if start_date:<br>
+            updates.append(f"start_date = '{start_date}'")<br>
+        if end_date:<br>
+            updates.append(f"end_date = '{end_date}'")<br>
+            <br>
+        if not updates:<br>
+            print("No se proporcionaron campos para actualizar.")<br>
+            return<br>
+            <br>
+        instruction = f"UPDATE experience_planning SET {', '.join(updates)} WHERE experience_id = {experience_id}"<br>
+        cursor.execute(instruction)<br>
+        conn.commit()<br>
+        <br>
+        if cursor.rowcount > 0:<br>
+            print(f"Experiencia número: {experience_id} actualizado correctamente.")<br>
+        else:<br>
+            print(f"No se encontró la experiencia: {experience_id}.")<br>
+    except sql.Error as e:<br>
+        print(f"Error al actualizar la experiencia: {e}")<br>
+    finally:<br>
+        conn.close()<br><br>
+
+        esto se ve de la siguiente manera:<br>
+        <img src="capturas/Funcion_Actualizar.PNG" alt="Funcion para actualizar los datos de la DB">
+    </p>
+</div>
+</body>
+
+</html>
 </body>
 
 </html>
